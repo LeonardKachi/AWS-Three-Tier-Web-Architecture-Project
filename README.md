@@ -74,8 +74,3 @@ In this architecture, a public-facing Application Load Balancer forwards client 
 - Delete RDS subnet group, RDS.
 
 ---
-
-
-## Workshop Instructions:
-
-See [AWS Three Tier Web Architecture](#)
