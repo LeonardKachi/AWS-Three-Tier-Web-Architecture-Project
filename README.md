@@ -22,7 +22,7 @@ In this architecture, a public-facing Application Load Balancer forwards client 
 - Create another S3 bucket for VPC flow logs.
 
 ## Step 3: Create IAM Role with Policies
-- S3 read only.
+- S3 Full Access.
 - SSM managed instance core.
 
 ## Step 4: Create VPC, Subnets, IGW, NAT-GW, RT
