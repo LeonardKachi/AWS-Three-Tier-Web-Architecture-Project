@@ -1,55 +1,32 @@
-# =========================================
-
 # COMMANDS TO RUN IN THE WEB SERVER
-
-# =========================================
 
 !/bin/bash
 
-# =========================================
 
 # SYSTEM UPDATE
-
-# =========================================
-
 sudo yum update -y
 
-# =========================================
 
 # INSTALL NGINX
-
-# =========================================
-
 sudo yum install nginx -y
 
-# =========================================
 
 # SWITCH TO EC2 USER DIRECTORY
-
-# =========================================
-
 cd /home/ec2-user
 
-# =========================================
+
 
 # COPY WEB-TIER CODE FROM S3
-
-# =========================================
-
 # !!! IMP !!!
-
 # MODIFY BELOW CODE WITH YOUR S3 BUCKET NAME
 
 aws s3 cp s3://<YOUR-S3-BUCKET-NAME>/application-code/web-tier ./web-tier --recursive
 
 sudo chown -R ec2-user:ec2-user /home/ec2-user/web-tier
 
-# =========================================
+
 
 # INSTALL NODEJS (FOR REACT)
-
-# =========================================
-
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 
 export NVM_DIR="/home/ec2-user/.nvm"
@@ -58,60 +35,39 @@ export NVM_DIR="/home/ec2-user/.nvm"
 nvm install 16
 nvm use 16
 
-# =========================================
+
 
 # INSTALL DEPENDENCIES
-
-# =========================================
-
 cd /home/ec2-user/web-tier
 npm install
 
-# =========================================
+
 
 # BUILD REACT APP
-
-# =========================================
-
 npm run build
 
-# =========================================
 
 # COPY BUILD FILES TO NGINX ROOT
-
-# =========================================
-
 sudo cp -r /home/ec2-user/web-tier/build/* /usr/share/nginx/html/
 
-# =========================================
+
 
 # CONFIGURE NGINX
-
-# =========================================
-
 cd /etc/nginx
 
 sudo mv nginx.conf nginx.conf.backup
 
 # !!! IMP !!!
-
 # MODIFY BELOW CODE WITH YOUR S3 BUCKET NAME
 
 sudo aws s3 cp s3://<YOUR-S3-BUCKET-NAME>/application-code/nginx.conf .
 
-# =========================================
 
 # TEST NGINX CONFIG
-
-# =========================================
-
 sudo nginx -t
 
-# =========================================
+
 
 # START & ENABLE NGINX
-
-# =========================================
-
 sudo systemctl enable nginx
 sudo systemctl restart nginx
